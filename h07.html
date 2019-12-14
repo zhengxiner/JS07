@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="utf-8">
+		<title>H7</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<script type="text/javascript" src="animate.js"></script>
+	</head>
+
+	<body>
+		<div class="scrollbar" id="scrollbar">
+			<img src="image/a15.png">
+			<div id="broadcast"><span id="cast">[温馨提示]最近有不少不法分子在网上骗人,请大家注意!!!</span></div>
+		</div>
+		<div class="box" id="box">
+			<div class="slider" id="slider">
+				<div class="slide">
+					<img src="image/b5.png">
+					<img src="image/b1.png">
+					<img src="image/b2.png">
+					<img src="image/b3.png">
+					<img src="image/b4.png">
+					<img src="image/b5.png">
+					<img src="image/b1.png">
+				</div>
+			</div>
+
+			<span id="leftarrow"><</span>
+			<span id="rightarrow">></span>
+
+			<ul class="navigation" id="navigation">
+				<li class="active">1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ul>
+		</div>
+
+		<script type="text/javascript">
+			var scrollbar = document.getElementById("scrollbar");
+			var broadcast = document.getElementById("broadcast");
+			var cast = document.getElementById("cast");
+			var box = document.getElementById("box");
+			var nav = document.getElementById("navigation").children;
+			var slider = document.getElementById("slider");
+			var slide = document.getElementById("slide");
+
+			var leftarrow = document.getElementById("leftarrow");
+			var rightarrow = document.getElementById("rightarrow");
+			var i = 1;  //乘数变量，显示的图片的下标
+			var isMoving = false;
+			var timer; //定时器
+
+
+			//实现滚动条
+	        function show() {
+	            var now = parseInt(getStyle(cast,"left"));
+	            cast.style.left = now - 1 + "px";
+	            if (now == -360) {
+	                cast.style.left = 1200 + "px";
+	            }
+	        }
+	        setInterval(show, 15);
+
+			
+			function next(){	//轮播下一张
+				if(!isMoving){
+					isMoving = true;
+					++i;
+					navChange();
+					animate(slider,{left:-1200 * i},function(){
+						if(i === 6){
+							slider.style.left = "-1200px";
+							i = 1;
+						}
+						isMoving = false;
+					});
+				}
+			}
+
+			timer = setInterval(next,3000);
+
+
+			function previous(){	//轮播上一张
+				if(!isMoving){
+					isMoving = true;
+					--i;
+					navChange();
+					animate(slider,{left:-1200 * i},function(){
+						if(i === 0){
+							slider.style.left = "-6000px";
+							i = 5;
+						}
+						isMoving = false;
+					});
+				}
+			}
+
+			
+			box.onmouseover = function(){	//鼠标划入
+				animate(leftarrow,{opacity:50});
+				animate(rightarrow,{opacity:50});
+				clearInterval(timer);	//划入清除定时器
+			}
+			box.onmouseout = function(){	//鼠标划出
+				animate(leftarrow,{opacity:0});
+				animate(rightarrow,{opacity:0});
+				timer = setInterval(next,3000);	//划出开定时器
+			}
+
+
+			rightarrow.onclick = next;	//右箭头
+			leftarrow.onclick = previous;	//左箭头
+
+
+			for(var a = 0;a < nav.length;a++){	//导航栏小按钮点击事件
+				nav[a].num = a;
+				nav[a].onclick = function(){
+					i = this.num + 1;   //按钮下标和图片下标差 1个
+					navChange();
+					animate(slider,{left:-1200 * i});
+				}
+			}
+			function navChange(){
+				for(var a = 0;a < nav.length;a++){	//小按钮背景色变化
+					nav[a].className = " ";
+				}
+				if(i === 6){
+					nav[0].className = "active";
+				}else if(i === 0){
+					nav[4].className = "active";
+				}else{
+					nav[i - 1].className = "active";
+				}
+			}
+		</script>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
